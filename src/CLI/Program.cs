@@ -11,7 +11,7 @@ class Program
 		var url = new Option<string>("--url", new string[] { "-u" })
 		{
 			Description = "Адрес сервера с \"потрясающими\" файлами",
-			DefaultValueFactory = _ => "http://localhost:8080",
+			DefaultValueFactory = _ => "http://localhost",
 			Recursive = true,
 			Arity = ArgumentArity.ExactlyOne
 		};

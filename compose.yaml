@@ -6,3 +6,5 @@
     volumes:
       - './AwesomeFiles/:/AwesomeFiles/:r'
       - './AwesomeLogs/:/AwesomeLogs/:rw'
+    ports:
+      - 80:8080
