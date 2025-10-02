@@ -1,6 +1,7 @@
 using Application.Interfaces.Services;
 using Infrastructure.Services;
 using Infrastructure.Services.BackgroundProcessing;
+using Serilog;
 
 namespace API;
 
@@ -9,6 +10,10 @@ public class Program
 	public static void Main(string[] args)
 	{
 		var builder = WebApplication.CreateBuilder(args);
+		builder.Host.UseSerilog((context, configuration) =>
+		{
+			configuration.ReadFrom.Configuration(context.Configuration);
+		});
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddSwaggerGen();
 
@@ -22,6 +27,7 @@ public class Program
 
 		builder.Services.AddControllers();
 		var app = builder.Build();
+		app.UseSerilogRequestLogging();
 		app.UseSwagger();
 		app.UseSwaggerUI();
 		app.UseHttpsRedirection();
