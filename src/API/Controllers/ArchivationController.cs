@@ -1,6 +1,7 @@
 using Application.Interfaces.Services;
 using Domain.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace API.Controllers;
 
@@ -9,10 +10,12 @@ namespace API.Controllers;
 public class ArchivationController : ControllerBase
 {
 	private readonly IFileProcessingService _fileProcessingService;
+	private readonly IMemoryCache _memoryCache;
 
-	public ArchivationController(IFileProcessingService fileProcessingService)
+	public ArchivationController(IFileProcessingService fileProcessingService, IMemoryCache memoryCache)
 	{
 		_fileProcessingService = fileProcessingService;
+		_memoryCache = memoryCache;
 	}
 
 	[HttpPost("initialize")]
@@ -57,15 +60,21 @@ public class ArchivationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public IActionResult DownloadByProcessId([FromRoute] string processId)
 	{
-		var result = _fileProcessingService.GetResult(processId);
-		if (result.Succeeded)
+		byte[] content;
+		if (!_memoryCache.TryGetValue(processId, out content!))
 		{
-			return File(result.Value, "application/zip", "AwesomeArchive.zip");
+			var result = _fileProcessingService.GetResult(processId);
+			if (result.Succeeded)
+			{
+				content = result.Value;
+				_memoryCache.Set(processId, content, new TimeSpan(0, 30, 0));
+			}
+			else
+			{
+				return Problem(title: "При обработке запроса произошла ошибка", detail: result.Error!.Description,
+					statusCode: result.Error!.Code);
+			}
 		}
-		else
-		{
-			return Problem(title: "При обработке запроса произошла ошибка", detail: result.Error!.Description,
-				statusCode: result.Error!.Code);
-		}
+		return File(content, "application/zip", "AwesomeArchive.zip");
 	}
 }

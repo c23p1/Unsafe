@@ -22,6 +22,8 @@ public class Program
 		builder.Services.AddTransient<IFileProcessingService, FileProcessingService>();
 		builder.Services.AddTransient<IArchivationService, ArchivationService>();
 
+		builder.Services.AddMemoryCache();
+
 		builder.Services.AddHostedService<BackgroundProcessingService>();
 		builder.Services.AddSingleton(new BackgroundWorkQueue(100));
 
