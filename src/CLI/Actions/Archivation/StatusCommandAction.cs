@@ -14,7 +14,8 @@ public class StatusCommandAction : AsynchronousCommandLineAction
 		var awesomeFilesAPI = RestService.For<IAwesomeFilesAPI>(url);
 		try
 		{
-			Console.WriteLine(await awesomeFilesAPI.GetProcessStatusByProcessId(processId));
+			var status = await awesomeFilesAPI.GetProcessStatusByProcessId(processId);
+			Console.WriteLine($"Статус процесса: {status}");
 		}
 		catch (HttpRequestException)
 		{

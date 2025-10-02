@@ -14,7 +14,8 @@ public class InitializeCommandAction : AsynchronousCommandLineAction
 		var awesomeFilesAPI = RestService.For<IAwesomeFilesAPI>(url);
 		try
 		{
-			Console.WriteLine(await awesomeFilesAPI.InitializeArchivationProcess(fileNames));
+			var processId = await awesomeFilesAPI.InitializeArchivationProcess(fileNames);
+			Console.WriteLine($"Id процесса создания архива: {processId}");
 		}
 		catch (HttpRequestException)
 		{

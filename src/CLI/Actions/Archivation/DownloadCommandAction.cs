@@ -15,10 +15,12 @@ public class DownloadCommandAction : AsynchronousCommandLineAction
 		var awesomeFilesAPI = RestService.For<IAwesomeFilesAPI>(url);
 		try
 		{
+			Console.WriteLine("Начата загрузка архива");
 			var content = await awesomeFilesAPI.DownloadByProcessId(processId);
 			var fileBytes = await content.ReadAsByteArrayAsync(cancellationToken);
 			var archiveFilePath = Path.Combine(destination, "AwesomeArchive.zip");
 			await File.WriteAllBytesAsync(archiveFilePath, fileBytes, cancellationToken);
+			Console.WriteLine("Архив успешно сохранён");
 		}
 		catch (UnauthorizedAccessException)
 		{

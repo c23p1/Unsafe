@@ -25,7 +25,7 @@ public class FileProcessingService : IFileProcessingService
 	public async Task<GenericResult<string>> AddArchivationProcessAsync(string[] fileNames)
 	{
 		if (fileNames.Length == 0)
-			return GenericResult<string>.Failure(Error.InvalidOperation("Необходимо указать как минимум 1 файл для архивации"));
+			return GenericResult<string>.Failure(Error.InvalidOperation("Необходимо указать как минимум 1 файл для создания архива"));
 		fileNames = fileNames.Distinct().ToArray();
 		var availableFileNames = _filesService.GetAllFileNames();
 		foreach (var fileName in fileNames)
