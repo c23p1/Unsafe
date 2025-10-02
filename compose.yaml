@@ -1,0 +1,8 @@
+﻿services:
+  api:
+    build:
+      context: .
+      dockerfile: src/API/Dockerfile
+    volumes:
+      - './AwesomeFiles/:/AwesomeFiles/:r'
+      - './AwesomeLogs/:/AwesomeLogs/:rw'
