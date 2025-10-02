@@ -54,7 +54,7 @@ class Program
 		};
 		archivationProcessStatusCommand.SetAction(async result => await new StatusCommandAction().InvokeAsync(result));
 
-		var downloadArchiveCommand = new Command("download", "Скачать созданный архив")
+		var downloadArchiveCommand = new Command("download", "Сохранить созданный архив")
 		{
 			Arguments = { new Argument<string>("processId") },
 			Options = { destinationFolder }
