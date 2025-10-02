@@ -16,10 +16,12 @@ public class DownloadCommandAction : AsynchronousCommandLineAction
 		try
 		{
 			Console.WriteLine("Начата загрузка архива");
-			var content = await awesomeFilesAPI.DownloadByProcessId(processId);
-			var fileBytes = await content.ReadAsByteArrayAsync(cancellationToken);
+			var stream = await awesomeFilesAPI.DownloadByProcessId(processId);
 			var archiveFilePath = Path.Combine(destination, "AwesomeArchive.zip");
-			await File.WriteAllBytesAsync(archiveFilePath, fileBytes, cancellationToken);
+			await using (var fileStream = File.Create(archiveFilePath))
+			{
+				await stream.CopyToAsync(fileStream, cancellationToken);
+			}
 			Console.WriteLine("Архив успешно сохранён");
 		}
 		catch (UnauthorizedAccessException)

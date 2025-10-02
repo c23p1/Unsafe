@@ -12,5 +12,5 @@ public interface IAwesomeFilesAPI
 	[Get("/archivation/getStatus/{processId}")]
 	Task<string> GetProcessStatusByProcessId(string processId);
 	[Get("/archivation/download/{processId}")]
-	Task<HttpContent> DownloadByProcessId(string processId);
+	Task<Stream> DownloadByProcessId(string processId);
 }

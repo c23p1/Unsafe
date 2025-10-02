@@ -75,6 +75,10 @@ public class ArchivationController : ControllerBase
 					statusCode: result.Error!.Code);
 			}
 		}
-		return File(content, "application/zip", "AwesomeArchive.zip");
+		var stream = new MemoryStream(content);
+		return new FileStreamResult(stream, "application/zip")
+		{
+			FileDownloadName = "AwesomeArchive.zip"
+		};
 	}
 }
