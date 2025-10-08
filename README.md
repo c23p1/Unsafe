@@ -15,7 +15,7 @@
 ### CLI
 Для сборки проекта CLI необходимо:
 - Зайти в директорию проекта
-- Запустить команду ```dotnet publish --project src/CLI/CLI.csproj```
+- Запустить команду ```dotnet publish src/CLI/```
 - Запустить команду ```./src/CLI/bin/Release/net8.0/afcli```, далее использовать её как приложение afcli
 
 Пример
